@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">金太阳同步练</string>
+    <string name="title_classroom">同步课堂</string>
+    <string name="title_practice">每周一练</string>
+    <string name="title_mine">我的</string>
+    <string name="practice_history">练习记录</string>
+</resources>

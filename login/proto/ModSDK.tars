@@ -1,0 +1,167 @@
+module ModSDK {
+  struct User {
+    0 require long userId; //用户ID
+    1 require string account; //账号  
+    2 optional string name; //用户昵称
+		3 optional string avatarURL; //用户头像
+  };
+
+// 目前支持三种登录方式:
+// 1.密码登录,需要填username和password字段,其他字段留空
+// 2.微信小程序登录,需要填wxLoginCode,wxEncryptData和wxIV字段,其他字段留空
+// 3.短信验证码登录,先调用GetVerifyCodeRequest获取验证码,然后填入verifyCode和username,username必须是刚才获取验证码的手机号, 其他字段留空
+  struct LoginRequest {
+    0 require string username; //用户名
+		1 require string password; //密码
+                2 optional string wxLoginCode; //微信登录码
+                3 optional string wxEncryptData; //加密的用户数据
+                4 optional string wxIV; //加密向量
+                5 optional string verifyCode;  //短信验证码登录
+                6 optional string wxAppId; //微信APPID,如果这里没有填写, 会取header.ext["wxAppId"]的值
+	};
+
+	struct LoginResponse {
+		0 require User userInfo; //用户信息
+                1 optional bool isCreated = false; //是否首次使用第三方平台登录触发创建用户
+	};
+
+
+        struct LoginWechatRequest {
+                0 require string wxLoginCode; //微信登录码
+                1 optional string wxEncryptData; //加密的用户数据
+                2 optional string wxIV; //加密向量
+                3 optional bool noCreate = false; //是否不创建用户
+	};
+
+	struct LoginWechatResponse {
+		0 require User userInfo; //用户信息
+                1 optional bool isCreated = false; //是否首次使用第三方平台登录触发创建用户
+	};
+
+        struct RegisterWechatRequest {
+                0 require string wxLoginCode; //微信登录码
+                1 optional string wxEncryptData; //加密的用户数据
+                2 optional string wxIV; //加密向量
+                3 optional string mobilePhone;
+                4 optional string verifyCode;
+                5 optional string wxAppId; //微信APPID,如果这里没有填写, 会取header.ext["wxAppId"]的值
+        };
+
+	struct RegisterWechatResponse {
+               0 require User userInfo; //用户信息
+               1 require bool isCreated = false; //是否创建新的账号
+	};
+
+
+	//忘记密码
+	struct ResetPasswordRequest {
+		0 require string mobilePhone; //手机号
+		1 require string verifyCode; //验证码
+		2 require string password; //密码
+	};
+
+	struct ResetPasswordResponse {
+		0 optional string reserved; //无意义字段, 因为无属性的结构编译不过
+	};
+
+	//获取短信验证码
+	struct GetVerifyCodeRequest {
+		0 require string mobilePhone; //手机号
+    1 optional int type;//业务类型 0:注册 1:重置密码 2:绑定手机号 3:登录
+	};
+
+	struct GetVerifyCodeResponse {
+		0 optional string reserved; //无意义字段, 因为无属性的结构编译不过
+	};
+
+  //修改密码
+  struct ChangePasswordRequest {
+    0 require string oldPassword; //原密码
+    1 require string newPassword; //新密码
+  };
+
+  struct ChangePasswordResponse {
+    0 optional string reserved; //无意义字段，因为无属性的结构编译不过
+  };
+
+	//注册用户
+	struct RegisterRequest {
+		0 require string mobilePhone; //电话号码
+		1 require string verifyCode; //短信验证码
+		2 require string password; //密码
+	};
+
+	struct RegisterResponse {
+		0 require User userInfo; //用户信息
+	};
+
+	//更新用户资料
+	struct UpdateUserInfoRequest {
+		0 optional string name; //名字
+		1 optional string avatar; //头像
+	};
+
+	struct UpdateUserInfoResponse {
+    0 optional User user; //最新的用户信息
+	};
+
+//下订单
+struct PlaceOrderRequest {
+       0 require int productId;
+       1 require int payType;  //1是微信，2是支付宝，3是苹果内购
+       2 optional string ext; //外带数据，由业务自己解析
+       3 optional string iapReceipt; //如果是苹果支付,这里给出支付凭据
+};
+
+  //微信支付
+  struct WXPayInfo {  
+    0 require string appid;
+    1 require string partnerid;
+    2 require string prepayid;
+    3 require string wx_package;
+    4 require string noncestr;
+    5 require string timestamp;
+    6 require string sign;
+  };
+
+  //支付宝支付
+  struct AliPayInfo {
+    0 require string payInfo;
+  };
+
+  //苹果内购  
+  struct AppleIAPInfo {
+    0 require string reserved;
+  };
+
+	//商品
+	struct Product {
+		0 require int productID; //商品ID
+		1 require string name; //商品名称
+		2 require int price; //商品价格
+                3 optional string iapIdentifier; //苹果商品标识
+                4 optional int subcatId;  //子分类
+	};
+
+
+
+
+struct PlaceOrderResponse {
+       0 require string orderId;
+       1 require int payType;
+       2 optional WXPayInfo wxPayInfo;
+       3 optional AliPayInfo aliPayInfo;
+       4 optional AppleIAPInfo appleIAPInfo;
+};
+
+
+//获取商品信息
+struct GetProductRequest {
+       0 optional string reserved; //无意义字段, 因为无属性的结构编译不过
+};
+
+struct GetProductResponse {
+       0 require vector<Product> products; //可购买商品列表
+};
+
+};

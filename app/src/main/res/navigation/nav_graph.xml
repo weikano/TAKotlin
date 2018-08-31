@@ -1,0 +1,11 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/tab_classroom">
+    <fragment android:id="@+id/tab_classroom"
+        android:name="com.kingsunedu.takotlin.ui.ClassroomFragment" />
+    <fragment android:id="@+id/tab_practice"
+        android:name="com.kingsunedu.takotlin.ui.PracticeFragment" />
+    <fragment android:id="@+id/tab_mine"
+        android:name="com.kingsunedu.takotlin.ui.MineFragment" />
+</navigation>

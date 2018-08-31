@@ -1,0 +1,90 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin:'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.kingsunedu.takotlin"
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME : project.getName()]
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+//    dataBinding {
+//        enabled = true
+//    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:$rootProject.appcompatVersion"
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
+    implementation "com.google.android.material:material:$rootProject.materialVersion"
+    implementation "com.google.android:flexbox:$rootProject.flexboxVersion"
+    implementation "com.airbnb.android:lottie:$rootProject.lottieVersion"
+
+    // Architecture Components
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
+    kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleVersion"
+    testImplementation "androidx.arch.core:core-testing:$rootProject.lifecycleVersion"
+
+    // Dagger
+    implementation "com.google.dagger:dagger-android:$rootProject.dagger"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.dagger"
+    kapt "com.google.dagger:dagger-compiler:$rootProject.dagger"
+    kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger"
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
+    implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
+    implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:$rootProject.brvahVersion"
+    implementation "android.arch.navigation:navigation-fragment:$rootProject.navigationVersion"
+    implementation "android.arch.navigation:navigation-runtime:$rootProject.navigationVersion"
+
+    // Leak Canary
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
+    api "com.jakewharton.threetenabp:threetenabp:$rootProject.threetenabpVersion"
+    testImplementation "org.threeten:threetenbp:$rootProject.threetenbpVersion"
+    implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
+
+    //rxjava2
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
+    implementation "com.jakewharton.rxbinding2:rxbinding:$rootProject.rxbindingVersion"
+
+    //ARouter
+    implementation "com.alibaba:arouter-api:$rootProject.arouterApiVersion"
+    kapt "com.alibaba:arouter-compiler:$rootProject.arouterCompilerVersion"
+    implementation project(':login')
+
+    //NYTimes store
+    implementation "com.nytimes.android:cache3:$rootProject.storeVersion"
+    implementation "com.nytimes.android:store3:$rootProject.storeVersion"
+}
+
+configurations.all {
+    resolutionStrategy {
+        force "io.reactivex.rxjava2:rxjava:$rootProject.rxjavaVersion"
+    }
+}

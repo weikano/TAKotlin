@@ -1,0 +1,4 @@
+<resources>
+    <string name="aliPay">支付宝</string>
+    <string name="wechat">微信</string>
+</resources>
